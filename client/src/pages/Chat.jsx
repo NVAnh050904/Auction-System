@@ -18,6 +18,13 @@ export default function ChatPage() {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const messagesEndRef = useRef(null);
   const recentSendsRef = useRef([]); // buffer recent sends to match server broadcasts
+  const messagesRef = useRef([]);
+  const messageIdsRef = useRef(new Set()); // track ids/local ids to avoid duplicates
+  const currentRoomRef = useRef(currentRoom);
+
+  // keep refs in sync so global socket handlers and poller can reliably check current state
+  useEffect(() => { currentRoomRef.current = currentRoom; }, [currentRoom]);
+  useEffect(() => { messagesRef.current = messages; }, [messages]);
 
   // Scroll to bottom when messages update
   const scrollToBottom = () => {
@@ -32,61 +39,91 @@ export default function ChatPage() {
   useEffect(() => {
     if (!user || !user._id) return;
 
-    // Fetch available rooms
+      // Fetch available rooms
     socket.emit('getRooms');
     socket.on('roomsList', (roomList) => {
       console.log('Rooms received:', roomList);
       setRooms(roomList);
-    });
 
-    // Listen for user joined
-    socket.on('userJoined', (data) => {
-      console.log('User joined:', data);
-      setOnlineUsers(data.users || []);
-      if (String(currentRoom) === String(data.roomId)) {
-        setMessages((m) => [...m, {
-          id: Date.now(),
-          text: `${data.userName} joined the chat`,
-          isSystem: true,
-          timestamp: new Date(),
-        }]);
+      // If we're currently in a room, update the online users from the rooms list
+      // This avoids a race where the client misses the immediate 'userJoined' event
+      if (currentRoom !== null && currentRoom !== undefined) {
+        const r = roomList.find(rr => String(rr.id) === String(currentRoom));
+        if (r) {
+          setOnlineUsers(r.users || []);
+        }
       }
     });
 
+    // Global handler: ensure we also listen for the initial roomsList emitted by server even
+    // before auth is available (the global effect below will set rooms/users). This guards
+    // against races where the server emits before this effect runs.
+
     // Listen for new messages
     socket.on('newMessage', (message) => {
-      console.log('📨 newMessage received:', message);
-      if (String(currentRoom) === String(message.roomId)) {
-        setMessages((prev) => {
-          // Deduplicate optimistic message if present.
-          // Prefer strict match (userId + text + timestamp), but fall back to relaxed match (text + timestamp)
-          let optIndex = prev.findIndex(m => m._optimistic && String(m.userId) === String(message.userId) && m.text === message.text && Math.abs(new Date(m.timestamp) - new Date(message.timestamp)) < 5000);
-          if (optIndex === -1) {
-            optIndex = prev.findIndex(m => m._optimistic && m.text === message.text && Math.abs(new Date(m.timestamp) - new Date(message.timestamp)) < 5000);
-          }
-          if (optIndex !== -1) {
-            const copy = [...prev];
-            // Preserve optimistic userId/userName if server broadcast omitted them
-            const optimistic = copy[optIndex];
-            if ((!message.userId || message.userId === '') && optimistic && optimistic.userId) {
-              message.userId = optimistic.userId;
-            }
-            if ((!message.userName || message.userName === '') && optimistic && optimistic.userName) {
-              message.userName = optimistic.userName;
-            }
-            copy.splice(optIndex, 1);
-            return [...copy, message];
-          }
-          // If no optimistic match found, try to match against recentSends buffer (handles race where server broadcast arrives before optimistic appended)
-          const recentIndex = recentSendsRef.current.findIndex(s => s.roomId === message.roomId && s.text === message.text && Math.abs(s.ts - new Date(message.timestamp).getTime()) < 5000);
-          if (recentIndex !== -1) {
-            const s = recentSendsRef.current.splice(recentIndex, 1)[0];
-            if ((!message.userId || message.userId === '') && s.userId) message.userId = s.userId;
-            if ((!message.userName || message.userName === '') && s.userName) message.userName = s.userName;
-            return [...prev, message];
-          }
-          return [...prev, message];
+      try {
+        console.log('📨 newMessage received:', message);
+        if (String(currentRoom) !== String(message.roomId)) return;
+
+        const mid = String(message.id || message._id || '');
+
+        // If message id is already known, replace optimistic entry and skip
+        if (mid && messageIdsRef.current.has(mid)) {
+          console.log('newMessage: known id, replacing existing entry by id=', mid);
+          setMessages(prev => prev.map(m => (String(m.id || m._id) === mid ? message : m)));
+          messagesRef.current = messagesRef.current.map(m => (String(m.id || m._id) === mid ? message : m));
+          return;
+        }
+
+        // Try to replace optimistic message by content+timestamp proximity
+        const optimisticIndex = messagesRef.current.findIndex(m => m._optimistic && String(m.userId) === String(message.userId) && m.text === message.text && Math.abs(new Date(m.timestamp).getTime() - new Date(message.timestamp || message.createdAt).getTime()) < 3000);
+        if (optimisticIndex !== -1) {
+          console.log('newMessage: replacing optimistic message at index', optimisticIndex);
+          setMessages(prev => {
+            const next = prev.slice();
+            const optimistic = next[optimisticIndex];
+
+            // fill missing user info from optimistic
+            if ((!message.userId || message.userId === '') && optimistic && optimistic.userId) message.userId = optimistic.userId;
+            if ((!message.userName || message.userName === '') && optimistic && optimistic.userName) message.userName = optimistic.userName;
+
+            // remove optimistic id from id set, add server id
+            if (optimistic.id) messageIdsRef.current.delete(String(optimistic.id));
+            if (optimistic._id) messageIdsRef.current.delete(String(optimistic._id));
+            if (message.id) messageIdsRef.current.add(String(message.id));
+            if (message._id) messageIdsRef.current.add(String(message._id));
+
+            next.splice(optimisticIndex, 1, message);
+            messagesRef.current = next;
+            return next;
+          });
+          return;
+        }
+
+        // If no optimistic match found, try to match against recent sends buffer
+        const recentIndex = recentSendsRef.current.findIndex(s => s.roomId === message.roomId && s.text === message.text && Math.abs(s.ts - new Date(message.timestamp || message.createdAt).getTime()) < 5000);
+        if (recentIndex !== -1) {
+          const s = recentSendsRef.current.splice(recentIndex, 1)[0];
+          if ((!message.userId || message.userId === '') && s.userId) message.userId = s.userId;
+          if ((!message.userName || message.userName === '') && s.userName) message.userName = s.userName;
+        }
+
+        // Prevent near-duplicates
+        const dup = messagesRef.current.find(existing => String(existing.userId) === String(message.userId) && existing.text === message.text && Math.abs(new Date(existing.timestamp || existing.createdAt).getTime() - new Date(message.timestamp || message.createdAt).getTime()) < 3000);
+        if (dup) {
+          console.log('newMessage: ignored near-duplicate message from', message.userId, message.text);
+          return;
+        }
+
+        // Append and record id
+        setMessages(prev => {
+          const next = [...prev, message];
+          messagesRef.current = next;
+          if (mid) messageIdsRef.current.add(mid);
+          return next;
         });
+      } catch (err) {
+        console.error('Error handling newMessage:', err, message);
       }
     });
 
@@ -111,6 +148,149 @@ export default function ChatPage() {
       socket.off('userLeft');
     };
   }, [user, currentRoom]);
+
+  // Ensure global roomsList handler is registered once so the initial server emit is never missed
+  useEffect(() => {
+    const onRoomsListGlobal = (roomList) => {
+      console.log('Rooms received (global):', roomList);
+      setRooms(roomList);
+      if (currentRoomRef.current !== null && currentRoomRef.current !== undefined) {
+        const r = roomList.find(rr => String(rr.id) === String(currentRoomRef.current));
+        if (r) {
+          setOnlineUsers(r.users || []);
+        }
+      }
+    };
+
+    socket.on('roomsList', onRoomsListGlobal);
+    return () => { socket.off('roomsList', onRoomsListGlobal); };
+  }, []);
+
+  // Rejoin and fetch messages on socket reconnect/connect to ensure clients don't miss messages
+  useEffect(() => {
+    if (!user || !user._id) return;
+    const onConnect = async () => {
+      console.log('Socket connected/reconnected, socket.id=', socket.id, 'currentRoom=', currentRoom);
+
+      // Always refresh rooms so we get correct online counts
+      try {
+        socket.emit('getRooms');
+      } catch (err) {
+        console.error('Error requesting rooms on connect:', err);
+      }
+
+      if (currentRoom === null || currentRoom === undefined) return;
+
+      // Fetch latest messages for the room to recover any missed messages
+      try {
+        const response = await fetch(`${API_URL}/chat/room/${currentRoom}`, { credentials: 'include' });
+        if (response.ok) {
+          const messagesData = await response.json();
+          const normalizedMessages = messagesData.map(msg => ({
+            ...msg,
+            userId: msg.userId ? String(msg.userId) : null,
+          }));
+          console.log(`Reconnected: loaded ${normalizedMessages.length} messages for room ${currentRoom}`);
+          setMessages(normalizedMessages);
+        }
+      } catch (err) {
+        console.error('Error fetching messages on reconnect:', err);
+      }
+
+      // Re-join the room so server will broadcast to us
+      try {
+        socket.emit('joinRoom', {
+          roomId: currentRoom,
+          userId: user._id,
+          userName: user.name,
+        });
+      } catch (err) {
+        console.error('Error emitting joinRoom on reconnect:', err);
+      }
+    };
+
+    socket.on('connect', onConnect);
+    socket.on('reconnect', onConnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('reconnect', onConnect);
+    };
+  }, [user, currentRoom]);
+
+  // Poll rooms periodically to keep online user counts fresh in case of missed socket events
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    const pollInterval = 2000;
+    let timer = null;
+
+    const pollRooms = () => {
+      try {
+        socket.emit('getRooms');
+      } catch (err) {
+        console.error('Error emitting getRooms during poll:', err);
+      } finally {
+        if (!cancelled) timer = setTimeout(pollRooms, pollInterval);
+      }
+    };
+
+    // start immediately
+    pollRooms();
+
+    return () => { cancelled = true; if (timer) clearTimeout(timer); };
+  }, [user]);
+
+  // Poll for new messages periodically so the UI reflects messages even if a socket event is missed
+  useEffect(() => {
+    if (currentRoom === null || currentRoom === undefined) return;
+    let cancelled = false;
+    const pollInterval = 2000; // ms
+    let timer = null;
+
+    const poll = async () => {
+      try {
+        const response = await fetch(`${API_URL}/chat/room/${currentRoom}`, { credentials: 'include' });
+        if (!response.ok) return;
+        const messagesData = await response.json();
+        const normalized = messagesData.map(msg => ({ ...msg, userId: msg.userId ? String(msg.userId) : null }));
+
+        // Use messageIdsRef to avoid races where messagesRef may be stale
+        const toAdd = normalized.filter(m => {
+          const mid = String(m.id || m._id || '');
+          if (mid && messageIdsRef.current.has(mid)) return false;
+          // Check for near-duplicate by user/text/timestamp
+          const dup = messagesRef.current.find(existing => {
+            const existingTs = new Date(existing.timestamp || existing.createdAt).getTime();
+            const newTs = new Date(m.timestamp || m.createdAt).getTime();
+            return String(existing.userId) === String(m.userId) && existing.text === m.text && Math.abs(existingTs - newTs) < 3000;
+          });
+          return !dup;
+        });
+        if (toAdd.length > 0) {
+          setMessages(prev => {
+            const next = [...prev, ...toAdd];
+            // Add ids to the id set and update messagesRef synchronously
+            toAdd.forEach(m => {
+              if (m.id) messageIdsRef.current.add(String(m.id));
+              if (m._id) messageIdsRef.current.add(String(m._id));
+            });
+            messagesRef.current = next;
+            return next;
+          });
+        }
+      } catch (err) {
+        console.error('Error polling messages:', err);
+      } finally {
+        if (!cancelled) timer = setTimeout(poll, pollInterval);
+      }
+    };
+
+    // Start poll immediately
+    poll();
+
+    return () => { cancelled = true; if (timer) clearTimeout(timer); };
+  }, [currentRoom]);
 
   const handleJoinRoom = async (roomId) => {
     setCurrentRoom(roomId);
@@ -144,6 +324,13 @@ export default function ChatPage() {
       userName: user.name,
       userRole: user.role,
     });
+
+    // Refresh the rooms list immediately so we can update online users if needed
+    try {
+      socket.emit('getRooms');
+    } catch (err) {
+      console.error('Error requesting rooms after join:', err);
+    }
   };
 
   const handleLeaveRoom = () => {
@@ -175,7 +362,14 @@ export default function ChatPage() {
       timestamp: new Date(),
       _optimistic: true,
     };
-    setMessages((m) => [...m, optimisticMsg]);
+    // Append and update refs synchronously to avoid races
+    setMessages((m) => {
+      const next = [...m, optimisticMsg];
+      messagesRef.current = next;
+      return next;
+    });
+    messageIdsRef.current.add(String(optimisticMsg.id));
+
     // record recent send so we can match server broadcast if it arrives before optimistic is added
     recentSendsRef.current.push({ text, roomId: currentRoom, ts: Date.now(), userId: optimisticMsg.userId, userName: optimisticMsg.userName });
     // keep buffer small

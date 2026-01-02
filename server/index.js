@@ -19,15 +19,22 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
-// Allow localhost and the LAN origin for development debugging
-const allowedOrigins = [process.env.ORIGIN, 'http://localhost:5173', 'http://192.168.1.17:5173'];
-console.log('Allowed CORS origins:', allowedOrigins);
+// Allow localhost and LAN origins for development debugging (accept any dev port)
+const allowedOrigins = [process.env.ORIGIN];
+console.log('Allowed CORS origins (base list):', allowedOrigins);
 
 app.use(cors({
     origin: function(origin, callback) {
         // allow requests with no origin (e.g., curl, mobile apps)
         if (!origin) return callback(null, true);
         if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+        try {
+          const lc = origin.toLowerCase();
+          if (lc.startsWith('http://localhost') || lc.startsWith('http://127.0.0.1') || lc.startsWith('http://[::1]')) return callback(null, true);
+        } catch (e) {
+          // fall through
+        }
+        if (process.env.ORIGIN && origin && origin.startsWith(process.env.ORIGIN)) return callback(null, true);
         return callback(new Error('CORS policy: Origin not allowed'));
     },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],

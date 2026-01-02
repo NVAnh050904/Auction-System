@@ -7,12 +7,23 @@ const rooms = new Map(); // Store room info: { roomId: { name, users: [] } }
 const userRooms = new Map(); // Track which room each user is in
 
 export const initSocket = (server, options = {}) => {
-  const allowedOrigins = [process.env.ORIGIN, 'http://localhost:5173', 'http://192.168.1.17:5173'];
+  const allowedOrigins = [process.env.ORIGIN];
   io = new Server(server, {
     cors: {
       origin: (origin, callback) => {
+        // Allow non-browser clients and same-origin
         if (!origin) return callback(null, true);
+        // Allow exact allowed origins
         if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+        // Allow localhost / 127.0.0.1 with any dev port
+        try {
+          const lc = origin.toLowerCase();
+          if (lc.startsWith('http://localhost') || lc.startsWith('http://127.0.0.1') || lc.startsWith('http://[::1]')) return callback(null, true);
+        } catch (e) {
+          // fall through
+        }
+        // If a custom ORIGIN is set, allow any same-base origin
+        if (process.env.ORIGIN && origin && origin.startsWith(process.env.ORIGIN)) return callback(null, true);
         return callback(new Error('CORS policy: Origin not allowed'));
       },
       credentials: true,
@@ -177,7 +188,9 @@ export const initSocket = (server, options = {}) => {
           timestamp: savedMsg.timestamp || savedMsg.createdAt || new Date(),
         };
 
-        console.log(`📤 Broadcasting to room:${roomId}, message=`, message);
+        const roomSockets = io.sockets.adapter.rooms.get(`room:${roomId}`);
+        const socketCount = roomSockets ? roomSockets.size : 0;
+        console.log(`📤 Broadcasting to room:${roomId}, sockets=${socketCount}, message=`, message);
         io.to(`room:${roomId}`).emit('newMessage', message);
         console.log(`✅ Message broadcast complete to room:${roomId}`);
       } catch (error) {
