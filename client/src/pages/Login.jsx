@@ -43,7 +43,7 @@ const Login = () => {
       <main className="flex-grow flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <div className="bg-white p-8 rounded-sm shadow">
-            <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+            <h1 className="text-2xl font-bold mb-6 text-center">Đăng nhập</h1>
 
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
@@ -74,7 +74,7 @@ const Login = () => {
                   htmlFor="password"
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
-                  Password
+                  Mật khẩu
                 </label>
                 <input
                   id="password"
@@ -109,17 +109,17 @@ const Login = () => {
 
             <div className="mt-4 text-center text-sm text-gray-600">
               <Link to="#" className="hover:underline">
-                Forgot your password?
+                Quên mật khẩu?
               </Link>
             </div>
 
             <div className="mt-6 text-center text-sm text-gray-600">
-              Don't have an account?{" "}
+              Chưa có tài khoản?{" "}
               <Link
                 to="/signup"
                 className="text-indigo-800 font-medium hover:underline"
               >
-                Sign up
+                Đăng ký ngay
               </Link>
             </div>
           </div>

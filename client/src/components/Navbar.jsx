@@ -57,7 +57,7 @@ export const Navbar = () => {
             <Link to="/" className="flex items-center space-x-2">
               <RiAuctionLine className="h-6 w-6 text-gray-700 " />
               <span className="text-xl font-bold text-gray-900 ">
-                Online Auction
+                Auction System 
               </span>
             </Link>
 
@@ -108,7 +108,7 @@ export const Navbar = () => {
           <div className="flex items-center space-x-2">
             <RiAuctionLine className="h-6 w-6 text-gray-700 " />
             <span className="text-xl font-bold text-gray-900 ">
-              Online Auction
+              Auction System
             </span>
           </div>
           <button
@@ -192,7 +192,7 @@ export const Navbar = () => {
                     }}
                   >
                     <IoLogOutOutline className="mr-3 h-5 w-5" />
-                    Sign out
+                    Thoát ra
                   </button>
                 </li>
               </ul>
@@ -204,14 +204,14 @@ export const Navbar = () => {
                 className="block w-full py-2 px-4 text-center text-gray-700  border border-gray-300 rounded-md hover:bg-gray-100 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Log in
+                Đăng Nhập
               </Link>
               <Link
                 to="/signup"
                 className="block w-full py-2 px-4 text-center bg-indigo-800 text-white rounded-md hover:bg-indigo-700 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Sign up
+                Đăng ký
               </Link>
             </div>
           )}
@@ -227,13 +227,13 @@ export const LoginSignup = () => {
         to="/login"
         className="px-4 py-2 text-gray-700  border border-gray-300 rounded-md hover:bg-gray-100 transition-colors hidden md:block"
       >
-        Log in
+        Đăng nhập
       </Link>
       <Link
         to="/signup"
         className="px-4 py-2 bg-indigo-800 text-white  rounded-md hover:bg-indigo-700 transition-colors hidden md:block"
       >
-        Sign up
+        Đăng ký
       </Link>
     </>
   );

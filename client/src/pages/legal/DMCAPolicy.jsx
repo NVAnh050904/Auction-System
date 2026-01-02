@@ -3,81 +3,69 @@ export default function DMCAPolicy() {
     <div className="min-h-screen px-4 sm:px-6 lg:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="p-8 pl-3">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">DMCA Policy</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">Chính sách DMCA</h1>
           <p className="text-sm text-gray-600 mb-8">
-            Last updated: {new Date().toLocaleDateString()}
+            Cập nhật lần cuối: {new Date().toLocaleDateString()}
           </p>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Digital Millennium Copyright Act
+              Luật bản quyền kỹ thuật số (DMCA)
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              We respect the intellectual property rights of others and expect
-              our users to do the same. We will respond to clear notices of
-              alleged copyright infringement that comply with the Digital
-              Millennium Copyright Act.
+              Chúng tôi tôn trọng quyền sở hữu trí tuệ của người khác và mong người dùng cũng làm như vậy. Chúng tôi sẽ phản hồi các thông báo vi phạm bản quyền hợp lệ theo DMCA.
             </p>
           </section>
-
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Filing a DMCA Notice
+              Nộp Thông báo DMCA
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              If you believe that content on our platform infringes your
-              copyright, please provide our designated agent with the following
-              information:
+              Nếu bạn cho rằng nội dung trên nền tảng của chúng tôi vi phạm bản quyền của bạn, vui lòng cung cấp cho đại diện được chỉ định các thông tin sau:
             </p>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
               <li>
-                A physical or electronic signature of the copyright owner or
-                authorized agent
+                Chữ ký vật lý hoặc điện tử của chủ sở hữu bản quyền hoặc đại diện được ủy quyền
               </li>
               <li>
-                Identification of the copyrighted work claimed to have been
-                infringed
+                Xác định tác phẩm bản quyền bị cho là bị xâm phạm
               </li>
               <li>
-                Identification of the material that is claimed to be infringing
+                Xác định tư liệu bị cho là vi phạm
               </li>
-              <li>Your contact information (address, phone number, email)</li>
+              <li>Thông tin liên hệ của bạn (địa chỉ, số điện thoại, email)</li>
               <li>
-                A statement of good faith belief that the use is not authorized
+                Một tuyên bố rằng bạn tin tưởng một cách thiện chí rằng việc sử dụng không được phép
               </li>
               <li>
-                A statement that the information is accurate and you are
-                authorized to act
+                Một tuyên bố rằng thông tin là chính xác và bạn có quyền hành động
               </li>
             </ul>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Counter-Notification
+              Phản hồi (Counter-Notification)
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              If you believe your content was removed in error, you may file a
-              counter-notification containing:
+              Nếu bạn cho rằng nội dung của mình bị gỡ bỏ do nhầm lẫn, bạn có thể nộp phản hồi chứa:
             </p>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
-              <li>Your physical or electronic signature</li>
-              <li>Identification of the removed material and its location</li>
+              <li>Chữ ký vật lý hoặc điện tử của bạn</li>
+              <li>Xác định tư liệu bị gỡ bỏ và vị trí của nó</li>
               <li>
-                A statement under penalty of perjury that removal was a mistake
+                Một tuyên bố dưới lời thề rằng việc gỡ bỏ là một sai lầm
               </li>
-              <li>Your contact information</li>
-              <li>Consent to jurisdiction of federal court</li>
+              <li>Thông tin liên hệ của bạn</li>
+              <li>Chấp nhận thẩm quyền của tòa liên bang</li>
             </ul>
           </section>
-
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Repeat Infringers
+              Người vi phạm lặp lại
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              We will terminate the accounts of users who are repeat infringers
-              of intellectual property rights.
+              Chúng tôi sẽ chấm dứt tài khoản của những người dùng tái phạm vi phạm quyền sở hữu trí tuệ.
             </p>
           </section>
         </div>

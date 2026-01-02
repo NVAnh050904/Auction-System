@@ -2,8 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import socket from '../utils/socket.js';
 import { useSelector } from 'react-redux';
 import { MdSend, MdLogout, MdAdminPanelSettings } from 'react-icons/md';
+import ChatPage from '../pages/Chat';
 
 export default function AdminMessages() {
+  // Unified chat for admin and users
+  return <ChatPage />;
   const { user } = useSelector((state) => state.auth);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [messages, setMessages] = useState([]);

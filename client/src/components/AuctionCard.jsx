@@ -81,7 +81,7 @@ export default function AuctionCard({ auction }) {
 
         <div className="space-y-2 mb-4">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-500">Current Price:</span>
+            <span className="text-sm text-gray-500">Giá hiện tại:</span>
             <span className="font-semibold text-lg text-green-600">
               ${currentPrice}
             </span>
@@ -94,22 +94,22 @@ export default function AuctionCard({ auction }) {
 
           <div className="flex flex-col gap-1">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-500">Time Left:</span>
+              <span className="text-sm text-gray-500">Thời gian còn lại:</span>
               <span className="text-sm font-medium text-red-600">
                 {timeLabel}
               </span>
             </div>
             {hasEnded && winnerName && (
-              <div className="text-sm text-gray-700">Winner: <span className="font-medium">{winnerName}</span></div>
+              <div className="text-sm text-gray-700">Người thắng: <span className="font-medium">{winnerName}</span></div>
             )}
             {hasEnded && !winnerName && (
-              <div className="text-sm text-gray-500">No winner (no bids)</div>
+              <div className="text-sm text-gray-500">Không người thắng (Không bids)</div>
             )}
             {/* Admin can message winner (if ended and winner exists) */}
             {user?.role === 'admin' && hasEnded && winnerName && (
               <div className="mt-2">
                 <button onClick={() => { console.log('AuctionCard: admin clicked Message Winner', auction._id, auction.winner); setShowChat(true); }} className="text-sm bg-blue-600 text-white px-3 py-1 rounded">Message Winner</button>
-                {showChat && <div className="text-sm text-gray-500 mt-2">Opening chat...</div>}
+                {showChat && <div className="text-sm text-gray-500 mt-2">Đang mở chat...</div>}
               </div>
             )}
           </div>
@@ -127,11 +127,11 @@ export default function AuctionCard({ auction }) {
 
         <div className="border-t border-gray-200 pt-3">
           <p className="text-xs text-gray-500 mb-3">
-            Seller: {auction?.sellerName || auction?.seller?.name}
+            Người bán: {auction?.sellerName || auction?.seller?.name}
           </p>
           <Link to={`/auction/${auction._id}`}>
             <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-sm font-medium">
-              View Details
+              Xem chi tiết
             </button>
           </Link>
         </div>

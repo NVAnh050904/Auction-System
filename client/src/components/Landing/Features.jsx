@@ -7,11 +7,10 @@ export const Features = () => {
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose Our Platform?
+              Vì sao chọn nền tảng của chúng tôi?
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We provide a secure, user-friendly environment for all your
-              auction needs
+              Chúng tôi cung cấp môi trường đấu giá an toàn, thân thiện và dễ sử dụng cho mọi nhu cầu của bạn.
             </p>
           </div>
 
@@ -22,11 +21,10 @@ export const Features = () => {
                 <FaGavel className="text-2xl text-blue-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                Easy Bidding
+                Đấu giá dễ dàng
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Place bids with confidence using our intuitive interface. Track
-                your bids and get real-time updates on auction status.
+                Đặt giá tự tin với giao diện trực quan, dễ sử dụng. Theo dõi lượt đấu giá của bạn và nhận cập nhật trạng thái phiên đấu giá theo thời gian thực.
               </p>
             </div>
 
@@ -36,25 +34,23 @@ export const Features = () => {
                 <FaShieldAlt className="text-2xl text-green-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                Secure Transactions
+                Giao dịch an toàn
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Your transactions are protected with industry-standard security
-                measures. Buy and sell with complete peace of mind.
+                Mọi giao dịch của bạn được bảo vệ bằng các tiêu chuẩn bảo mật hàng đầu trong ngành. Mua bán hoàn toàn yên tâm.
               </p>
             </div>
 
             {/* Feature 3 */}
             <div className="text-center p-6 bg-white border border-gray-200 rounded-md shadow-sm">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FaClock className="text-2xl text-orange-600" />
+              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaClock className="text-2xl text-yellow-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                24/7 Auctions
+                Đấu giá 24/7
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Never miss an opportunity. Our platform runs around the clock,
-                so you can bid and sell whenever it's convenient for you.
+                Không bỏ lỡ bất kỳ cơ hội nào. Nền tảng của chúng tôi hoạt động liên tục 24/7, cho phép bạn đấu giá và bán hàng bất cứ khi nào thuận tiện.
               </p>
             </div>
           </div>

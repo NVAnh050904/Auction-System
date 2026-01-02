@@ -30,7 +30,7 @@ export const AuctionList = () => {
         {/* Filters */}
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-4 text-gray-900">
-            Filter by Category
+            Lọc theo danh mục
           </h2>
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
@@ -59,7 +59,7 @@ export const AuctionList = () => {
           </h2>
 
           <div className="flex items-center gap-2">
-            <label className="text-sm text-gray-700">Show ended</label>
+            <label className="text-sm text-gray-700">Hiển thị các phiên đã kết thúc</label>
             <input
               type="checkbox"
               checked={showEnded}
@@ -72,7 +72,7 @@ export const AuctionList = () => {
         {filteredAuctions.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">
-              No auctions found in this category.
+              Không tìm thấy phiên đấu giá nào trong danh mục này.
             </p>
           </div>
         ) : (

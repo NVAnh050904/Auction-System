@@ -20,8 +20,9 @@ export default function ChatPage() {
   const recentSendsRef = useRef([]); // buffer recent sends to match server broadcasts
   const messagesRef = useRef([]);
   const messageIdsRef = useRef(new Set()); // track ids/local ids to avoid duplicates
-  const currentRoomRef = useRef(currentRoom);
-
+  const currentRoomRef = useRef(currentRoom);  // Refs to support quick on-demand fetching when new messages arrive
+  const fetchMessagesRef = useRef(null);
+  const refetchTimeoutRef = useRef(null);
   // keep refs in sync so global socket handlers and poller can reliably check current state
   useEffect(() => { currentRoomRef.current = currentRoom; }, [currentRoom]);
   useEffect(() => { messagesRef.current = messages; }, [messages]);
@@ -31,6 +32,63 @@ export default function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Helper to add a single message uniquely (dedupe by id, or by user/text/timestamp proximity)
+  const addUniqueMessage = (message) => {
+    const mid = String(message.id || message._id || '');
+
+    // 1) If message with same id exists, replace it
+    if (mid && messagesRef.current.findIndex(m => String(m.id || m._id || '') === mid) !== -1) {
+      setMessages(prev => prev.map(m => (String(m.id || m._id || '') === mid ? message : m)));
+      messagesRef.current = messagesRef.current.map(m => (String(m.id || m._id || '') === mid ? message : m));
+      if (mid) messageIdsRef.current.add(mid);
+      console.log('addUniqueMessage(chat): replaced existing by id=', mid);
+      return;
+    }
+
+    // 2) Try to find an optimistic message to replace (strict)
+    const strictIndex = messagesRef.current.findIndex(m => m._optimistic && String(m.userId) === String(message.userId) && m.text === message.text && Math.abs(new Date(m.timestamp) - new Date(message.timestamp)) < 5000);
+    if (strictIndex !== -1) {
+      setMessages(prev => {
+        const next = prev.slice();
+        next.splice(strictIndex, 1, message);
+        messagesRef.current = next;
+        if (mid) messageIdsRef.current.add(mid);
+        console.log('addUniqueMessage(chat): replaced optimistic (strict) at index', strictIndex, 'with id=', mid);
+        return next;
+      });
+      return;
+    }
+
+    // 3) Looser optimistic match
+    const looseIndex = messagesRef.current.findIndex(m => m._optimistic && m.text === message.text && String(m.userId) === String(message.userId));
+    if (looseIndex !== -1) {
+      setMessages(prev => {
+        const next = prev.slice();
+        next.splice(looseIndex, 1, message);
+        messagesRef.current = next;
+        if (mid) messageIdsRef.current.add(mid);
+        console.log('addUniqueMessage(chat): replaced optimistic (loose) at index', looseIndex, 'with id=', mid);
+        return next;
+      });
+      return;
+    }
+
+    // 4) Prevent near-duplicates
+    const dup = messagesRef.current.find(existing => String(existing.userId) === String(message.userId) && existing.text === message.text && Math.abs(new Date(existing.timestamp || existing.createdAt).getTime() - new Date(message.timestamp || message.createdAt).getTime()) < 3000);
+    if (dup) {
+      console.log('addUniqueMessage(chat): ignored near-duplicate for user', message.userId);
+      return;
+    }
+
+    // 5) Otherwise append
+    setMessages(prev => {
+      const next = [...prev, message];
+      messagesRef.current = next;
+      if (mid) messageIdsRef.current.add(mid);
+      console.log('addUniqueMessage(chat): appended message id=', mid);
+      return next;
+    });
+  };
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -72,6 +130,9 @@ export default function ChatPage() {
           console.log('newMessage: known id, replacing existing entry by id=', mid);
           setMessages(prev => prev.map(m => (String(m.id || m._id) === mid ? message : m)));
           messagesRef.current = messagesRef.current.map(m => (String(m.id || m._id) === mid ? message : m));
+          // quick on-demand refetch nearby messages from server (debounced)
+          clearTimeout(refetchTimeoutRef.current);
+          refetchTimeoutRef.current = setTimeout(() => { if (fetchMessagesRef.current) fetchMessagesRef.current(); }, 250);
           return;
         }
 
@@ -95,33 +156,20 @@ export default function ChatPage() {
 
             next.splice(optimisticIndex, 1, message);
             messagesRef.current = next;
+            // quick on-demand refetch nearby messages from server (debounced)
+            clearTimeout(refetchTimeoutRef.current);
+            refetchTimeoutRef.current = setTimeout(() => { if (fetchMessagesRef.current) fetchMessagesRef.current(); }, 250);
             return next;
           });
           return;
         }
 
         // If no optimistic match found, try to match against recent sends buffer
-        const recentIndex = recentSendsRef.current.findIndex(s => s.roomId === message.roomId && s.text === message.text && Math.abs(s.ts - new Date(message.timestamp || message.createdAt).getTime()) < 5000);
-        if (recentIndex !== -1) {
-          const s = recentSendsRef.current.splice(recentIndex, 1)[0];
-          if ((!message.userId || message.userId === '') && s.userId) message.userId = s.userId;
-          if ((!message.userName || message.userName === '') && s.userName) message.userName = s.userName;
-        }
-
-        // Prevent near-duplicates
-        const dup = messagesRef.current.find(existing => String(existing.userId) === String(message.userId) && existing.text === message.text && Math.abs(new Date(existing.timestamp || existing.createdAt).getTime() - new Date(message.timestamp || message.createdAt).getTime()) < 3000);
-        if (dup) {
-          console.log('newMessage: ignored near-duplicate message from', message.userId, message.text);
-          return;
-        }
-
-        // Append and record id
-        setMessages(prev => {
-          const next = [...prev, message];
-          messagesRef.current = next;
-          if (mid) messageIdsRef.current.add(mid);
-          return next;
-        });
+        // Use addUniqueMessage helper (handles optimistic replacement and dedupe)
+        addUniqueMessage(message);
+        // quick on-demand refetch nearby messages from server (debounced)
+        clearTimeout(refetchTimeoutRef.current);
+        refetchTimeoutRef.current = setTimeout(() => { if (fetchMessagesRef.current) fetchMessagesRef.current(); }, 250);
       } catch (err) {
         console.error('Error handling newMessage:', err, message);
       }
@@ -222,7 +270,7 @@ export default function ChatPage() {
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
-    const pollInterval = 2000;
+    const pollInterval = 1000; // faster updates for online user counts
     let timer = null;
 
     const pollRooms = () => {
@@ -245,10 +293,10 @@ export default function ChatPage() {
   useEffect(() => {
     if (currentRoom === null || currentRoom === undefined) return;
     let cancelled = false;
-    const pollInterval = 2000; // ms
+    const pollInterval = 800; // ms (reduced for faster UI updates)
     let timer = null;
 
-    const poll = async () => {
+    const fetchLatestMessages = async () => {
       try {
         const response = await fetch(`${API_URL}/chat/room/${currentRoom}`, { credentials: 'include' });
         if (!response.ok) return;
@@ -281,15 +329,21 @@ export default function ChatPage() {
         }
       } catch (err) {
         console.error('Error polling messages:', err);
-      } finally {
-        if (!cancelled) timer = setTimeout(poll, pollInterval);
       }
+    };
+
+    // Expose on-demand fetch so 'newMessage' handler can request a quick reconciliation
+    fetchMessagesRef.current = fetchLatestMessages;
+
+    const poll = async () => {
+      await fetchLatestMessages();
+      if (!cancelled) timer = setTimeout(poll, pollInterval);
     };
 
     // Start poll immediately
     poll();
 
-    return () => { cancelled = true; if (timer) clearTimeout(timer); };
+    return () => { cancelled = true; if (timer) clearTimeout(timer); if (refetchTimeoutRef.current) clearTimeout(refetchTimeoutRef.current); fetchMessagesRef.current = null; };
   }, [currentRoom]);
 
   const handleJoinRoom = async (roomId) => {
@@ -362,18 +416,14 @@ export default function ChatPage() {
       timestamp: new Date(),
       _optimistic: true,
     };
-    // Append and update refs synchronously to avoid races
-    setMessages((m) => {
-      const next = [...m, optimisticMsg];
-      messagesRef.current = next;
-      return next;
-    });
-    messageIdsRef.current.add(String(optimisticMsg.id));
 
+    // Add via dedupe helper
+    addUniqueMessage(optimisticMsg);
     // record recent send so we can match server broadcast if it arrives before optimistic is added
     recentSendsRef.current.push({ text, roomId: currentRoom, ts: Date.now(), userId: optimisticMsg.userId, userName: optimisticMsg.userName });
-    // keep buffer small
     recentSendsRef.current = recentSendsRef.current.slice(-20);
+    // keep optimistic id in id set
+    messageIdsRef.current.add(String(optimisticMsg.id));
 
     socket.emit('sendMessage', {
       roomId: currentRoom,
@@ -478,11 +528,11 @@ export default function ChatPage() {
               <div className="flex-1 overflow-auto p-4 space-y-3 bg-gray-50">
                 {loadingMessages ? (
                   <div className="text-center text-gray-400 mt-8">
-                    Loading messages...
+                    Đang tải tin nhắn...
                   </div>
                 ) : messages.length === 0 ? (
                   <div className="text-center text-gray-400 mt-8">
-                    No messages yet. Start the conversation!
+                    Chưa có tin nhắn nào. Hãy bắt đầu cuộc trò chuyện!
                   </div>
                 ) : (
                   messages.map((msg) => {
@@ -537,7 +587,7 @@ export default function ChatPage() {
                   type="submit"
                   className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
                 >
-                  <MdSend /> Send
+                  <MdSend /> Gửi
                 </button>
               </form>
             </div>

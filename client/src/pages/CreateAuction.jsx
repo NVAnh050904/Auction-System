@@ -147,7 +147,7 @@ export const CreateAuction = () => {
                   htmlFor="itemName"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Item Name <span className="text-red-600">*</span>
+                  Tên sản phẩm <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -156,7 +156,7 @@ export const CreateAuction = () => {
                   value={formData.itemName}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter the name of your item"
+                  placeholder="Nhập tên sản phẩm của bạn"
                   required
                 />
               </div>
@@ -167,7 +167,7 @@ export const CreateAuction = () => {
                   htmlFor="itemDescription"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Item Description <span className="text-red-600">*</span>
+                  Mô tả sản phẩm <span className="text-red-600">*</span>
                 </label>
                 <textarea
                   id="itemDescription"
@@ -176,7 +176,7 @@ export const CreateAuction = () => {
                   onChange={handleInputChange}
                   rows={4}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-vertical"
-                  placeholder="Provide a detailed description of your item including condition, features, and any relevant information"
+                  placeholder="Cung cấp mô tả chi tiết về sản phẩm của bạn bao gồm tình trạng, tính năng và bất kỳ thông tin liên quan nào"
                   required
                 />
               </div>
@@ -189,7 +189,7 @@ export const CreateAuction = () => {
                     htmlFor="itemCategory"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Category <span className="text-red-600">*</span>
+                    Danh mục <span className="text-red-600">*</span>
                   </label>
                   <select
                     id="itemCategory"
@@ -199,7 +199,7 @@ export const CreateAuction = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   >
-                    <option value="">Select a category</option>
+                    <option value="">Lựa chọn danh mục</option>
                     {categories.map((category) => (
                       <option key={category} value={category}>
                         {category}
@@ -214,7 +214,7 @@ export const CreateAuction = () => {
                     htmlFor="startingPrice"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Starting Price ($) <span className="text-red-600">*</span>
+                    Giá khởi điểm ($) <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="number"
@@ -239,7 +239,7 @@ export const CreateAuction = () => {
                     htmlFor="itemStartDate"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Auction Start Date & Time <span className="text-red-600">*</span>
+                    Thời gian bắt đầu đấu giá <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="datetime-local"
@@ -260,7 +260,7 @@ export const CreateAuction = () => {
                     htmlFor="itemEndDate"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Auction End Date & Time <span className="text-red-600">*</span>
+                    Thời gian kết thúc đấu giá <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="datetime-local"
@@ -282,7 +282,7 @@ export const CreateAuction = () => {
                   htmlFor="itemPhoto"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Item Photo <span className="text-red-600">*</span>
+                  Hình ảnh sản phẩm <span className="text-red-600">*</span>
                 </label>
                 <div className="space-y-3">
                   <input
@@ -310,7 +310,7 @@ export const CreateAuction = () => {
                         }}
                         className="mt-2 text-sm text-red-600 hover:underline"
                       >
-                        Remove Image
+                        Loại bỏ hình ảnh
                       </button>
                     </div>
                   )}
@@ -331,7 +331,7 @@ export const CreateAuction = () => {
                   disabled={isPending}
                   className="flex-1 sm:flex-none bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
                 >
-                  {isPending ? "Creating Auction..." : "Create Auction"}
+                  {isPending ? "Creating Auction..." : "Tạo phiên đấu giá"}
                 </button>
               </div>
             </form>
@@ -349,30 +349,28 @@ export const HelpSection = () => {
   return (
     <div className="mt-8 bg-blue-50 border border-blue-200 rounded-md p-6">
       <h3 className="text-lg font-semibold text-blue-900 mb-3">
-        Tips for Creating a Successful Auction
+        Mẹo tạo phiên đấu giá thành công
       </h3>
       <ul className="space-y-2 text-blue-800 text-sm">
         <li className="flex items-start">
           <span className="text-blue-600 mr-2">•</span>
-          Use clear, high-quality photos that show your item from multiple
-          angles
+          Sử dụng hình ảnh rõ nét, chất lượng cao và chụp sản phẩm từ nhiều góc độ
         </li>
         <li className="flex items-start">
           <span className="text-blue-600 mr-2">•</span>
-          Write detailed descriptions including condition, dimensions, and any
-          flaws
+          Viết mô tả chi tiết bao gồm tình trạng, kích thước và các khuyết điểm (nếu có)
         </li>
         <li className="flex items-start">
           <span className="text-blue-600 mr-2">•</span>
-          Set a reasonable starting price to attract bidders
+          Đặt giá khởi điểm hợp lý để thu hút người tham gia đấu giá
         </li>
         <li className="flex items-start">
           <span className="text-blue-600 mr-2">•</span>
-          Choose appropriate auction duration (3-7 days typically work best)
+          Chọn thời lượng đấu giá phù hợp (thường là 3-7 ngày là tốt nhất)
         </li>
         <li className="flex items-start">
           <span className="text-blue-600 mr-2">•</span>
-          Select the most accurate category to help buyers find your item
+          Chọn danh mục phù hợp nhất để giúp người mua tìm thấy sản phẩm của bạn
         </li>
       </ul>
     </div>

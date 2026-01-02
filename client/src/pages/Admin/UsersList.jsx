@@ -97,13 +97,12 @@ export const UsersList = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">All Users</h1>
-              <p className="text-gray-600">Manage and monitor all registered users</p>
             </div>
             <Link
               to="/admin"
               className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
             >
-              Back to Dashboard
+              Quay về Admin Dashboard
             </Link>
           </div>
         </div>
@@ -113,12 +112,12 @@ export const UsersList = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
-                Search Users
+                Tìm kiếm người dùng
               </label>
               <input
                 type="text"
                 id="search"
-                placeholder="Search by name or email..."
+                placeholder="Tìm bằng tên hoặc email..."
                 value={searchTerm}
                 onChange={handleSearch}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -126,7 +125,7 @@ export const UsersList = () => {
             </div>
             <div className="flex items-end">
               <div className="text-sm text-gray-600">
-                {pagination.totalUsers ? `${pagination.totalUsers} total users` : ''}
+                {pagination.totalUsers ? `${pagination.totalUsers} người` : ''}
               </div>
             </div>
           </div>
@@ -224,7 +223,7 @@ export const UsersList = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                           user.role === 'admin' 
-                            ? 'bg-purple-100 text-purple-800' 
+                            ? 'bg-red-100 text-red-800' 
                             : 'bg-green-100 text-green-800'
                         }`}>
                           {user.role}

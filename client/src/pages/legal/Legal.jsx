@@ -3,31 +3,31 @@ import { Link } from "react-router";
 export default function Legal() {
   const legalPages = [
     {
-      title: "Privacy Policy",
+      title: "Chính sách bảo mật",
       description:
-        "Learn how we collect, use, and protect your personal information.",
+        "Tìm hiểu cách chúng tôi thu thập, sử dụng và bảo vệ thông tin cá nhân của bạn.",
       to: "/legal/privacy-policy",
     },
     {
-      title: "Terms of Service",
+      title: "Điều khoản Dịch vụ",
       description:
-        "The terms and conditions governing your use of our platform.",
+        "Các điều khoản và điều kiện điều chỉnh việc sử dụng nền tảng của bạn.",
       to: "/legal/terms-of-service",
     },
     {
-      title: "DMCA Policy",
-      description: "Our policy for handling copyright infringement claims.",
+      title: "Chính sách DMCA",
+      description: "Chính sách xử lý các khiếu nại vi phạm bản quyền.",
       to: "/legal/dmca",
     },
     {
-      title: "Code of Conduct",
+      title: "Bộ quy tắc ứng xử",
       description:
-        "Guidelines for respectful and appropriate behavior on our platform.",
+        "Hướng dẫn về hành vi tôn trọng và phù hợp trên nền tảng của chúng tôi.",
       to: "/legal/code-of-conduct",
     },
     {
-      title: "Acceptable Use Policy",
-      description: "Rules about what you can and cannot do on our platform.",
+      title: "Chính sách Sử dụng",
+      description: "Các quy định về những gì bạn có thể và không thể làm trên nền tảng.",
       to: "/legal/acceptable-use-policy",
     },
   ];
@@ -37,11 +37,11 @@ export default function Legal() {
       <div className="max-w-7xl mx-auto">
         <div className="p-8 pl-3">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Legal Documents
+            Tài liệu Pháp lý
           </h1>
           <p className="text-lg text-gray-600 mb-8">
-            Please review our legal documents to understand your rights and
-            responsibilities when using our online auction platform.
+            Vui lòng xem các tài liệu pháp lý của chúng tôi để hiểu quyền và
+            trách nhiệm khi sử dụng nền tảng đấu giá trực tuyến.
           </p>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -61,11 +61,10 @@ export default function Legal() {
 
           <div className="mt-12 p-6 bg-blue-50 rounded-sm">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Questions?
+              Thắc mắc?
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              If you have any questions about our legal policies, please contact
-              us using <Link to={"/contact"} className="text-blue-600">contact page</Link>.
+              Nếu bạn có câu hỏi về các chính sách pháp lý, vui lòng liên hệ với chúng tôi qua <Link to={"/contact"} className="text-blue-600">trang liên hệ</Link>.
             </p>
           </div>
         </div>

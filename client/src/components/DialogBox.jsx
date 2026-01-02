@@ -24,10 +24,10 @@ const DialogBox = ({ onConfirm, onCancel }) => {
               <i className="bx bx-error text-3xl">&#9888;</i>
             </div>
             <div className="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
-              <p className="font-bold">Warning!</p>
+              <p className="font-bold">Cảnh Báo!</p>
               <p className="text-sm text-gray-700 mt-1">
-                You will lose all of your data by deleting your account. This
-                action cannot be undone.
+                Bạn sẽ mất toàn bộ dữ liệu khi xóa tài khoản.
+                Hành động này không thể hoàn tác.
               </p>
             </div>
           </div>

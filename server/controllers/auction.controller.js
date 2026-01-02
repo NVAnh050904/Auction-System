@@ -61,6 +61,7 @@ export const showAuction = async (req, res) => {
 
         const auction = await Product.find(filter)
             .populate("seller", "name")
+            .populate("winner", "name")
             .select("itemName itemDescription currentPrice bids itemStartDate itemEndDate itemCategory itemPhoto seller winner isSold")
             .sort({ createdAt: -1 });
 
@@ -78,7 +79,7 @@ export const showAuction = async (req, res) => {
             itemEndDate: auction.itemEndDate,
             hasStarted: new Date(auction.itemStartDate) <= now,
             hasEnded: new Date(auction.itemEndDate) <= now,
-            winner: auction.winner ? { _id: auction.winner, name: auction.winner.name } : null,
+            winner: auction.winner ? { _id: auction.winner._id ? String(auction.winner._id) : String(auction.winner), name: auction.winner.name || null } : null,
             isSold: auction.isSold || false
         }));
 

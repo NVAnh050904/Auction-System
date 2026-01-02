@@ -4,86 +4,81 @@ export default function CodeOfConduct() {
       <div className="max-w-7xl mx-auto">
         <div className="p-8 pl-3">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            Code of Conduct
+            Bộ Quy tắc Ứng xử
           </h1>
           <p className="text-sm text-gray-600 mb-8">
-            Last updated: {new Date().toLocaleDateString()}
+            Cập nhật lần cuối: {new Date().toLocaleDateString()}
           </p>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Our Commitment
+              Cam kết của chúng tôi
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              We are committed to providing a welcoming, safe, and inclusive
-              environment for all users of our auction platform, regardless of
-              background, identity, or experience level.
+              Chúng tôi cam kết tạo ra một môi trường chào đón, an toàn và bình đẳng
+              cho tất cả người dùng nền tảng đấu giá, bất kể nền tảng, danh tính hay kinh nghiệm.
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Expected Behavior
+              Hành vi mong đợi
             </h2>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
-              <li>Be respectful and courteous to all users</li>
-              <li>Communicate professionally in all interactions</li>
-              <li>Provide accurate descriptions of items for sale</li>
-              <li>Honor your commitments as both buyer and seller</li>
-              <li>Respect others' privacy and personal information</li>
-              <li>Follow all platform rules and guidelines</li>
+              <li>Tôn trọng và lịch sự với mọi người dùng</li>
+              <li>Giao tiếp chuyên nghiệp trong mọi tương tác</li>
+              <li>Mô tả chính xác các mặt hàng khi đăng bán</li>
+              <li>Thực hiện cam kết của bạn với tư cách người mua và người bán</li>
+              <li>Tôn trọng quyền riêng tư và thông tin cá nhân của người khác</li>
+              <li>Tuân thủ tất cả quy định và hướng dẫn của nền tảng</li>
             </ul>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Unacceptable Behavior
+              Hành vi không chấp nhận được
             </h2>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
-              <li>Harassment, intimidation, or discrimination</li>
-              <li>Hate speech or offensive language</li>
-              <li>Fraudulent or deceptive practices</li>
-              <li>Spam or unsolicited promotional content</li>
-              <li>Sharing personal information without consent</li>
-              <li>Attempting to manipulate auction outcomes</li>
-              <li>Creating fake accounts or impersonating others</li>
+              <li>Quấy rối, đe dọa hoặc phân biệt đối xử</li>
+              <li>Lời lẽ thù ghét hoặc xúc phạm</li>
+              <li>Hành vi gian lận hoặc lừa đảo</li>
+              <li>Spam hoặc nội dung quảng cáo không mong muốn</li>
+              <li>Chia sẻ thông tin cá nhân mà không có sự đồng ý</li>
+              <li>Cố gắng thao túng kết quả đấu giá</li>
+              <li>Tạo tài khoản giả hoặc giả mạo người khác</li>
             </ul>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Reporting Violations
+              Báo cáo vi phạm
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              If you witness or experience behavior that violates this code of
-              conduct, please report it immediately through our reporting system
-              or by contacting support@yourauction.com
+              Nếu bạn chứng kiến hoặc trải nghiệm hành vi vi phạm bộ quy tắc này, vui lòng báo cáo ngay qua hệ thống báo cáo hoặc liên hệ tới support@yourauction.com
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Consequences
+              Hệ quả
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Violations of this code of conduct may result in:
+              Vi phạm bộ quy tắc có thể dẫn đến:
             </p>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
-              <li>Warning or temporary suspension</li>
-              <li>Removal of content or listings</li>
-              <li>Permanent account termination</li>
-              <li>Legal action if applicable</li>
+              <li>Cảnh cáo hoặc tạm đình chỉ</li>
+              <li>Gỡ bỏ nội dung hoặc danh sách</li>
+              <li>Chấm dứt tài khoản vĩnh viễn</li>
+              <li>Hành động pháp lý nếu cần</li>
             </ul>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Appeals Process
+              Quy trình kháng cáo
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              If you believe you have been unfairly penalized, you may appeal
-              the decision by contacting using contact page with details of your
-              case.
+              Nếu bạn cho rằng mình bị xử lý không công bằng, bạn có thể kháng cáo quyết định bằng cách liên hệ qua trang liên hệ và cung cấp chi tiết vụ việc.
             </p>
           </section>
         </div>

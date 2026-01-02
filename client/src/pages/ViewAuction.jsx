@@ -156,7 +156,7 @@ export const ViewAuction = () => {
                   <p className="text-sm text-gray-500">Time Left</p>
                   <p
                     className={`text-lg font-semibold ${
-                      isActive ? "text-red-600" : (hasStarted ? "text-gray-500" : "text-orange-600")
+                      isActive ? "text-red-600" : (hasStarted ? "text-gray-500" : "text-yellow-600")
                     }`}
                   >
                     {isActive ? endLabel : (hasStarted ? "Ended" : startsLabel) }
@@ -167,7 +167,7 @@ export const ViewAuction = () => {
 
             {/* Bid Form */}
             {data.seller._id !== user?._id && isActive && (
-              <div className="bg-white p-6 rounded-md shadow-md border border-gray-200">
+            <div className="bg-white p-6 rounded-md shadow-md border border-gray-200">
                 <h3 className="text-lg font-semibold mb-4">Place Your Bid</h3>
                 <form onSubmit={handleBidSubmit} className="space-y-4">
                   <div>

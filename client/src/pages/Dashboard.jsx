@@ -20,7 +20,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200">
             <h3 className="text-sm font-medium text-gray-500">
-              Total Auctions
+              Tổng số phiên đấu giá
             </h3>
             <p className="text-2xl font-bold text-gray-900 mt-1">
               {data.totalAuctions}
@@ -28,7 +28,7 @@ const Dashboard = () => {
           </div>
           <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200">
             <h3 className="text-sm font-medium text-gray-500">
-              Active Auctions
+              Phiên đấu giá đang diễn ra
             </h3>
             <p className="text-2xl font-bold text-green-600 mt-1">
               {data.activeAuctions}
@@ -50,14 +50,14 @@ const Dashboard = () => {
               to="/auction"
               className="text-blue-600 hover:text-blue-700 font-medium text-sm hover:underline"
             >
-              View More
+              Xem thêm
             </Link>
           </div>
 
           {data.latestAuctions.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-sm shadow-sm border border-gray-200">
               <p className="text-gray-500 text-lg">
-                No auctions available at the moment.
+                Hiện tại chưa có phiên đấu giá nào.
               </p>
             </div>
           ) : (
@@ -72,23 +72,23 @@ const Dashboard = () => {
         {/* Your Auctions Section */}
         <div>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Your Auctions</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Các phiên đấu giá của bạn</h2>
             <Link
               to="/myauction"
               className="text-blue-600 hover:text-blue-700 font-medium text-sm hover:underline"
             >
-              View More
+              Xem thêm
             </Link>
           </div>
 
           {data.latestUserAuctions.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-sm shadow-sm border border-gray-200">
               <p className="text-gray-500 text-lg">
-                You haven't created any auctions yet.
+                Bạn chưa tạo phiên đấu giá nào.
               </p>{" "}
               <Link to="/create">
                 <button className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-sm hover:bg-blue-700 transition-colors">
-                  Create Your First Auction
+                  Tạo phiên đấu giá đầu tiên
                 </button>
               </Link>
             </div>

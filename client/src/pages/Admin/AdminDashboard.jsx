@@ -107,11 +107,10 @@ export const AdminDashboard = () => {
         <div className="mb-8 flex items-center gap-4">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
           {unread > 0 && (
-            <div className="ml-2 inline-flex items-center justify-center h-7 w-7 rounded-full bg-red-600 text-white text-xs font-semibold">
+            <div className="ml-2 inline-flex items-center justify-center h-7 w-7 rounded-full bg-indigo-600 text-white text-xs font-semibold">
               {unread}
             </div>
           )}
-          <p className="text-gray-600">Manage auctions, users, and monitor system activity</p>
         </div>
 
         {/* Statistics Cards */}
@@ -121,7 +120,7 @@ export const AdminDashboard = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-                    Active Auctions
+                    Phiên đấu giá đang diễn ra
                   </h3>
                   <p className="text-2xl font-bold text-gray-900 mt-2">
                     {dashboardData.stats.activeAuctions || 0}
@@ -139,7 +138,7 @@ export const AdminDashboard = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-                    Total Auctions
+                    Tổng số phiên đấu giá
                   </h3>
                   <p className="text-2xl font-bold text-gray-900 mt-2">
                     {dashboardData.stats.totalAuctions || 0}
@@ -157,14 +156,14 @@ export const AdminDashboard = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-                    Total Users
+                    Tổng số người dùng
                   </h3>
                   <p className="text-2xl font-bold text-gray-900 mt-2">
                     {dashboardData.stats.totalUsers || 0}
                   </p>
                 </div>
-                <div className="bg-purple-100 p-3 rounded-full">
-                  <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-indigo-100 p-3 rounded-full">
+                  <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
                   </svg>
                 </div>
@@ -175,14 +174,14 @@ export const AdminDashboard = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-                    Recent Signups
+                    Người dùng đăng ký gần đây
                   </h3>
                   <p className="text-2xl font-bold text-gray-900 mt-2">
                     {dashboardData.stats.recentUsers || 0}
                   </p>
                 </div>
-                <div className="bg-orange-100 p-3 rounded-full">
-                  <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-blue-100 p-3 rounded-full">
+                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                   </svg>
                 </div>
@@ -200,13 +199,13 @@ export const AdminDashboard = () => {
                 to="/auction"
                 className="text-blue-600 hover:text-blue-700 font-medium text-sm hover:underline"
               >
-                View All Auctions
+                Xem tất cả phiên đấu giá
               </Link>
             </div>
 
             {!dashboardData.recentAuctions || dashboardData.recentAuctions.length === 0 ? (
               <div className="text-center py-12 bg-white rounded-sm shadow-sm border border-gray-200">
-                <p className="text-gray-500 text-lg">No active auctions at the moment.</p>
+                <p className="text-gray-500 text-lg">Hiện tại không có phiên đấu giá nào đang diễn ra.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-4">
@@ -226,19 +225,19 @@ export const AdminDashboard = () => {
               to="/admin/users"
               className="text-blue-600 hover:text-blue-700 font-medium text-sm hover:underline"
             >
-              View All Users
+              Xem tất cả người dùng
             </Link>
           </div>
 
           {/* Users Table */}
           <div className="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Latest 10 Users</h3>
+              <h3 className="text-lg font-medium text-gray-900">10 người dùng mới nhất</h3>
             </div>
             
             {!users || users.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-500">No users found matching your criteria.</p>
+                <p className="text-gray-500">Không tìm thấy người dùng nào phù hợp với tiêu chí của bạn.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -283,7 +282,7 @@ export const AdminDashboard = () => {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                             user.role === 'admin' 
-                              ? 'bg-purple-100 text-purple-800' 
+                              ? 'bg-indigo-100 text-indigo-800' 
                               : 'bg-green-100 text-green-800'
                           }`}>
                             {user.role}
@@ -297,7 +296,7 @@ export const AdminDashboard = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                            Active
+                            Đang hoạt động
                           </span>
                         </td>
                       </tr>

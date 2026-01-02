@@ -6,119 +6,117 @@ export default function AcceptableUsePolicy() {
       <div className="max-w-7xl mx-auto">
         <div className="p-8 pl-3">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            Acceptable Use Policy
+            Chính sách Sử dụng
           </h1>
           <p className="text-sm text-gray-600 mb-8">
-            Last updated: {new Date().toLocaleDateString()}
+            Cập nhật lần cuối: {new Date().toLocaleDateString()}
           </p>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Purpose
+              Mục đích
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              This Acceptable Use Policy outlines the permitted and prohibited
-              uses of our online auction platform to ensure a safe and fair
-              environment for all users.
+              Chính sách này nêu rõ các hành vi được phép và bị cấm trên nền tảng
+              đấu giá trực tuyến của chúng tôi nhằm đảm bảo môi trường an toàn và
+              công bằng cho tất cả người dùng.
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Permitted Uses
+              Các hành vi được phép
             </h2>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
               <li>
-                Buying and selling legitimate items through our auction system
+                Mua bán các mặt hàng hợp pháp thông qua hệ thống đấu giá của chúng tôi
               </li>
-              <li>Creating accurate listings with honest descriptions</li>
-              <li>Communicating with other users for transaction purposes</li>
-              <li>Using our platform features as intended</li>
+              <li>Tạo danh sách chính xác với mô tả trung thực</li>
+              <li>Liên lạc với người dùng khác để phục vụ giao dịch</li>
+              <li>Sử dụng các tính năng của nền tảng theo mục đích</li>
               <li>
-                Providing feedback and reviews based on actual experiences
+                Đưa ra phản hồi và đánh giá dựa trên trải nghiệm thực tế
               </li>
             </ul>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Prohibited Items
+              Mục cấm
             </h2>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
-              <li>Illegal drugs, weapons, or controlled substances</li>
-              <li>Stolen or counterfeit goods</li>
-              <li>Adult content or services</li>
-              <li>Live animals or animal parts from endangered species</li>
-              <li>Hazardous materials or chemicals</li>
-              <li>Items that infringe intellectual property rights</li>
-              <li>Government-issued documents or currency</li>
+              <li>Ma túy, vũ khí hoặc chất bị kiểm soát</li>
+              <li>Hàng bị đánh cắp hoặc hàng giả</li>
+              <li>Nội dung hoặc dịch vụ người lớn</li>
+              <li>Động vật sống hoặc các bộ phận của loài bị đe dọa</li>
+              <li>Vật liệu hoặc hóa chất nguy hiểm</li>
+              <li>Hàng hóa vi phạm quyền sở hữu trí tuệ</li>
+              <li>Tài liệu do chính phủ phát hành hoặc tiền tệ</li>
             </ul>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Prohibited Activities
+              Hành vi bị cấm
             </h2>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
-              <li>Attempting to hack, disrupt, or damage our systems</li>
-              <li>Using automated tools to manipulate auctions</li>
-              <li>Creating multiple accounts to circumvent restrictions</li>
-              <li>Engaging in money laundering or fraud</li>
-              <li>Collecting user information for unauthorized purposes</li>
-              <li>Interfering with other users' ability to use the platform</li>
-              <li>Reverse engineering or copying our software</li>
+              <li>Cố gắng xâm nhập, làm gián đoạn hoặc phá hoại hệ thống</li>
+              <li>Sử dụng công cụ tự động để thao túng đấu giá</li>
+              <li>Tạo nhiều tài khoản để né các hạn chế</li>
+              <li>Rửa tiền hoặc gian lận</li>
+              <li>Thu thập thông tin người dùng cho mục đích không được phép</li>
+              <li>Can thiệp vào quyền sử dụng nền tảng của người khác</li>
+              <li>Phân tích ngược hoặc sao chép phần mềm của chúng tôi</li>
             </ul>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Content Guidelines
+              Hướng dẫn nội dung
             </h2>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
-              <li>All content must be appropriate and family-friendly</li>
-              <li>Images must accurately represent the item being sold</li>
-              <li>Descriptions must be truthful and complete</li>
-              <li>No misleading or false advertising</li>
-              <li>Respect copyright and trademark laws</li>
+              <li>Tất cả nội dung phải phù hợp và thân thiện với gia đình</li>
+              <li>Hình ảnh phải mô tả chính xác món hàng đang bán</li>
+              <li>Mô tả phải trung thực và đầy đủ</li>
+              <li>Không quảng cáo gây hiểu lầm hoặc sai sự thật</li>
+              <li>Tôn trọng luật bản quyền và nhãn hiệu</li>
             </ul>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Security Requirements
+              Yêu cầu bảo mật
             </h2>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
-              <li>Keep your account credentials secure</li>
-              <li>Do not share your account with others</li>
-              <li>Report suspicious activity immediately</li>
-              <li>Use strong, unique passwords</li>
-              <li>Enable two-factor authentication when available</li>
+              <li>Bảo mật thông tin đăng nhập của bạn</li>
+              <li>Không chia sẻ tài khoản với người khác</li>
+              <li>Báo cáo hoạt động đáng ngờ ngay lập tức</li>
+              <li>Sử dụng mật khẩu mạnh và khác nhau cho từng dịch vụ</li>
+              <li>Kích hoạt xác thực hai yếu tố khi có thể</li>
             </ul>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Enforcement
+              Thực thi
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              We reserve the right to investigate violations of this policy and
-              take appropriate action, including:
+              Chúng tôi có quyền điều tra các vi phạm chính sách này và áp dụng các biện pháp phù hợp, bao gồm:
             </p>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
-              <li>Removing content or listings</li>
-              <li>Suspending or terminating accounts</li>
-              <li>Reporting illegal activities to authorities</li>
-              <li>Taking legal action when necessary</li>
+              <li>Gỡ bỏ nội dung hoặc danh sách</li>
+              <li>Tạm ngưng hoặc chấm dứt tài khoản</li>
+              <li>Báo cáo hành vi phạm pháp cho cơ quan chức năng</li>
+              <li>Thực hiện hành động pháp lý khi cần thiết</li>
             </ul>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Contact Information
+              Thông tin liên hệ
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              If you have questions about this Acceptable Use Policy or need to
-              report a violation, please contact us using <Link to={"/contact"} className="text-blue-600">contact page</Link>.
+              Nếu bạn có câu hỏi về Chính sách Sử dụng này hoặc cần báo cáo vi phạm, vui lòng liên hệ với chúng tôi qua <Link to={"/contact"} className="text-blue-600">trang liên hệ</Link>.
             </p>
           </section>
         </div>
